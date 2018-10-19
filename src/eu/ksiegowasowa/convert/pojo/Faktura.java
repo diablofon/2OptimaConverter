@@ -6,6 +6,9 @@ import java.util.List;
 
 public class Faktura {
 
+	public enum TypFaktury {Zakup, Sprzedaz};
+	
+	public TypFaktury typ;
 	public Date dataWystawienia;
 	public Date dataWystawienia2;
 	public Date dataSprzedazy;

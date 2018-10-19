@@ -12,14 +12,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import eu.ksiegowasowa.convert.pojo.Faktura;
+import eu.ksiegowasowa.convert.pojo.Faktura.TypFaktury;
 import eu.ksiegowasowa.convert.pojo.Pozycja;
 
 public class EppReader {
 
-	private static String INFO = "[INFO]";
-	private static String NAGLOWEK = "[NAGLOWEK]";
-	private static String ZAWARTOSC = "[ZAWARTOSC]";
-	private static String TOKEN = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
+	private static final String INFO = "[INFO]";
+	private static final String NAGLOWEK = "[NAGLOWEK]";
+	private static final String ZAWARTOSC = "[ZAWARTOSC]";
+	private static final String TOKEN = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
+	private static final String FAKTURA_SPRZEDAZOWA = "FS";
+	private static final String FAKTURA_ZAKUPOWA = "FZ";
 
 	public EppReader() {
 	}
@@ -66,7 +69,7 @@ public class EppReader {
 					nextInfo = true;
 				} else {
 					if (nextNaglowek) {
-						//faktura = new Faktura();
+						// faktura = new Faktura();
 						faktura = handleNaglowek(line);
 						nextNaglowek = false;
 					} else if (nextZawartosc) {
@@ -96,13 +99,17 @@ public class EppReader {
 	private Faktura handleNaglowek(String line) throws ConvertException {
 		String dateFormat = "yyyyMMdd";
 		int RODZAJ_FAKTURY_INDEX = 0;
-		final String FAKTURA_SPRZEDAZOWA = "FS";
 		DateFormat formatter = new SimpleDateFormat(dateFormat);
 		Faktura f = null;
 		String[] tokens = line.split(TOKEN);
 		switch (trimSemicolons(tokens[RODZAJ_FAKTURY_INDEX])) {
 		case FAKTURA_SPRZEDAZOWA:
 			f = new Faktura();
+			f.typ = TypFaktury.Sprzedaz;
+			break;
+		case FAKTURA_ZAKUPOWA:
+			f = new Faktura();
+			f.typ = TypFaktury.Zakup;
 			break;
 		default:
 			System.out.println("Omijam fakturę typu: " + trimSemicolons(tokens[RODZAJ_FAKTURY_INDEX]));
