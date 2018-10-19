@@ -107,7 +107,6 @@ public class XMLWriter {
 	void createDocSprzedazy(Element rejestrySprzedazyVat, Faktura faktura) {
 
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-
 		Element rejestrVat = createElementAndAppend("REJESTR_SPRZEDAZY_VAT", rejestrySprzedazyVat, null, false);
 
 		createElementAndAppend("MODUL", rejestrVat, "Handel", false);
@@ -247,7 +246,6 @@ public class XMLWriter {
 	void createDocZakupu(Element rejestryZakupuVat, Faktura faktura) {
 
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-
 		Element rejestrVat = createElementAndAppend("REJESTR_ZAKUPU_VAT", rejestryZakupuVat, null, false);
 
 		createElementAndAppend("MODUL", rejestrVat, "Rejestr Vat", false);
