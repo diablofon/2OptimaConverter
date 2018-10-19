@@ -11,7 +11,7 @@ public class FileConverter {
 	public void convert(String fileName) throws ConvertException {
 		List<Faktura> faktury = new EppReader().readFile(fileName);
 		String newFileName = getNewFileName(fileName);
-		//new XMLWriter().writeFile(faktury, newFileName + "xml");
+		new XMLWriter().writeFile(faktury, newFileName + "xml");
 		new XLSWriter().writeFile(faktury, newFileName + "xls");
 	}
 	
