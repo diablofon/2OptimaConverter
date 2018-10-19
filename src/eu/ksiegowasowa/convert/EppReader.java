@@ -103,10 +103,10 @@ public class EppReader {
 		Faktura f = null;
 		String[] tokens = line.split(TOKEN);
 		switch (trimSemicolons(tokens[RODZAJ_FAKTURY_INDEX])) {
-		/*case FAKTURA_SPRZEDAZOWA:
+		case FAKTURA_SPRZEDAZOWA:
 			f = new Faktura();
 			f.typ = TypFaktury.Sprzedaz;
-			break;*/
+			break;
 		case FAKTURA_ZAKUPOWA:
 			f = new Faktura();
 			f.typ = TypFaktury.Zakup;
