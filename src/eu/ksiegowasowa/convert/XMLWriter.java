@@ -258,7 +258,7 @@ public class XMLWriter {
 		createElementAndAppend("TERMIN", rejestrVat, df.format(faktura.terminPlatnosci), true);
 		createElementAndAppend("DATA_DATAOBOWIAZKUPODATKOWEGO", rejestrVat, df.format(faktura.dataSprzedazy), true);
 		createElementAndAppend("DATA_DATAPRAWAODLICZENIA", rejestrVat, df.format(faktura.dataSprzedazy), true);
-		createElementAndAppend("NUMER", rejestrVat, faktura.numer, true);
+		createElementAndAppend("NUMER", rejestrVat, faktura.numer2, true);
 		createElementAndAppend("KOREKTA", rejestrVat, "Nie", false);
 		createElementAndAppend("KOREKTA_NUMER", rejestrVat, "", true);
 		createElementAndAppend("METODA_KASOWA", rejestrVat, "Nie", false);
@@ -268,7 +268,7 @@ public class XMLWriter {
 		createElementAndAppend("EKSPORT", rejestrVat, "Nie", false);
 		createElementAndAppend("FINALNY", rejestrVat, "Nie", false);
 		createElementAndAppend("PODATNIK_CZYNNY", rejestrVat, "Tak", false);
-		createElementAndAppend("IDENTYFIKATOR_KSIEGOWY", rejestrVat, faktura.numer, true);
+		createElementAndAppend("IDENTYFIKATOR_KSIEGOWY", rejestrVat, faktura.numer2, true);
 
 		// podmiot
 		createElementAndAppend("TYP_PODMIOTU", rejestrVat, "kontrahent", true);
@@ -342,11 +342,10 @@ public class XMLWriter {
 			createElementAndAppend("NETTO_SYS2", pozycjaEl, formatNumber(pozycja.kwotaNetto), false);
 			createElementAndAppend("VAT_SYS2", pozycjaEl, formatNumber(pozycja.kwotaVat), false);
 			createElementAndAppend("RODZAJ_ZAKUPU", pozycjaEl, "", false);
-			createElementAndAppend("ODLICZENIA_VAT", pozycjaEl, "nie", false);
+			createElementAndAppend("ODLICZENIA_VAT", pozycjaEl, "tak", false);
 			createElementAndAppend("KOLUMNA_KPR", pozycjaEl, "Towary", true);
 			createElementAndAppend("KOLUMNA_RYCZALT", pozycjaEl, "3.0", true);
 			createElementAndAppend("OPIS_POZ", pozycjaEl, "Zakup towarów lub usług", true);
-			createElementAndAppend("ODLICZENIA_VAT", pozycjaEl, "nie", false);
 		}
 
 		// płatności
@@ -384,7 +383,7 @@ public class XMLWriter {
 		createElementAndAppend("PLAT_VAN_FA_Z_PA", platnoscEl, "Nie", false);
 		createElementAndAppend("PLAT_SPLIT_PAYMENT", platnoscEl, "Nie", false);
 		createElementAndAppend("PLAT_SPLIT_NIP", platnoscEl, faktura.klient.nip, true);
-		createElementAndAppend("PLAT_SPLIT_NR_DOKUMENTU", platnoscEl, faktura.numer, true);
+		createElementAndAppend("PLAT_SPLIT_NR_DOKUMENTU", platnoscEl, faktura.numer2, true);
 
 		// atrybuty
 		Element atrybutyEl = createElementAndAppend("ATRYBUTY", rejestrVat, null, false);

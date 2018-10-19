@@ -14,7 +14,8 @@ public class Faktura {
 	public Date dataSprzedazy;
 	public Date terminPlatnosci;
 	public String opis;
-	public String numer;
+	public String numer; //sprzedaz
+	public String numer2; //koszty
 	public Klient klient;
 	public List<Pozycja> pozycje;
 	public Float wartoscNetto;

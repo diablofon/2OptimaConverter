@@ -119,7 +119,10 @@ public class EppReader {
 			for (int index = 0; index < tokens.length; index++) {
 				String token = trimSemicolons(tokens[index]);
 				switch (index) {
-				case 6: // numer faktury
+				case 4: // numer faktury kosztowej
+					f.numer2 = token;
+					break;
+				case 6: // numer faktury sprzedazowej
 					f.numer = token;
 					break;
 				case 12: // skrocona nazwa
