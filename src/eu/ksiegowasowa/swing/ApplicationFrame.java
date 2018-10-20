@@ -9,7 +9,9 @@ import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.net.URL;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
@@ -129,6 +131,12 @@ public class ApplicationFrame extends javax.swing.JFrame {
 		c.gridx = 1;
 		c.gridy = 4;
 		myPanel.add(convertButton, c);
+		
+		URL url = getClass().getClassLoader().getResource("resources/icon.png");
+		if (url != null) {
+			ImageIcon icon = new ImageIcon(url);
+			setIconImage(icon.getImage());
+		}
 	}
 
 	private void convertButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_convertButtonActionPerformed
