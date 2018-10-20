@@ -2,17 +2,22 @@ package eu.ksiegowasowa.swing;
 
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.GridLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
+import eu.ksiegowasowa.Config;
 import eu.ksiegowasowa.convert.ConvertException;
 import eu.ksiegowasowa.convert.FileConverter;
 
@@ -24,6 +29,13 @@ public class ApplicationFrame extends javax.swing.JFrame {
 	private JButton selectFileButton;
 	private JButton convertButton;
 	private JFileChooser fileChooser;
+	private JCheckBox generujKontrahentow;
+	private JCheckBox generujSprzedaz;
+	private JCheckBox generujZakupy;
+	private JTextField nazwaBazy;
+	private JLabel nazwaBazyTitle;
+
+	Config config = Config.getConfig();
 
 	public ApplicationFrame() {
 		initComponents();
@@ -41,6 +53,17 @@ public class ApplicationFrame extends javax.swing.JFrame {
 		convertButton = new JButton();
 		selectFileButton = new JButton();
 		fileChooser = new JFileChooser();
+		generujKontrahentow = new JCheckBox("Generuj Kontrahentów");
+		generujSprzedaz = new JCheckBox("Generuj Sprzedaż");
+		generujZakupy = new JCheckBox("Generuj Zakupy");
+		nazwaBazy = new JTextField();
+		nazwaBazyTitle = new JLabel();
+
+		generujKontrahentow.setSelected(config.isGenerujKontrahentow());
+		generujSprzedaz.setSelected(config.isGenerujSprzedaz());
+		generujZakupy.setSelected(config.isGenerujZakup());
+		nazwaBazy.setText(config.getNazwaBazy());
+		nazwaBazyTitle.setText("Nazwa bazy klienta:");
 
 		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 		setTitle("2 Optima Konwerter");
@@ -60,54 +83,100 @@ public class ApplicationFrame extends javax.swing.JFrame {
 			}
 		});
 		selectFileButton.setSize(50, 20);
-		setSize(350, 150);		
-		
+		setSize(450, 200);
+
 		centreWindow(this);
-		GridLayout layout = new GridLayout(3, 1);
+		GridBagLayout layout = new GridBagLayout();
 		Container myPanel = getContentPane();
 		myPanel.setLayout(layout);
-		myPanel.add(selectFileButton);
-		myPanel.add(fileNameLabel);
-		myPanel.add(convertButton);
-
+		GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.insets = new Insets(5, 5, 5, 5);
+		// c.gridwidth = 2;
+		c.gridx = 1;
+		c.gridy = 0;
+		myPanel.add(selectFileButton, c);
+		GridBagConstraints c2 = new GridBagConstraints();
+		c2.fill = GridBagConstraints.HORIZONTAL;
+		c2.gridwidth = 2;
+		c2.gridx = 0;
+		c2.gridy = 1;
+		myPanel.add(fileNameLabel, c2);
+		/*
+		 * c2.gridx = 0; c2.gridy = 2; myPanel.add(new JSeparator(), c2);
+		 */
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.gridx = 0;
+		c.gridy = 2;
+		myPanel.add(nazwaBazyTitle, c);
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.gridx = 1;
+		c.gridy = 2;
+		myPanel.add(nazwaBazy, c);
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.gridx = 2;
+		c.gridy = 3;
+		myPanel.add(generujKontrahentow, c);
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.gridx = 0;
+		c.gridy = 3;
+		myPanel.add(generujSprzedaz, c);
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.gridx = 1;
+		c.gridy = 3;
+		myPanel.add(generujZakupy, c);
+		c.fill = GridBagConstraints.HORIZONTAL;
+		c.gridx = 1;
+		c.gridy = 4;
+		myPanel.add(convertButton, c);
 	}
 
 	private void convertButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_convertButtonActionPerformed
 		// do conversion
-		if (!fileNameLabel.getText().isEmpty()) {
-			String message = "Gotowe!";
+		String message = null;
+		if (fileNameLabel.getText().isEmpty()) {
+			message = "Nie wybrano pliku";
+		} else if (nazwaBazy.getText().isEmpty()) {
+			message = "Nazwa bazy nie może byc pusta";
+		} else if (!generujSprzedaz.isSelected() && !generujZakupy.isSelected() && !generujKontrahentow.isSelected()) {
+			message = "Nie wybrano żadnej z opcji do generowania pliku";
+		}
+		if (message == null) {
+			message = "Gotowe!";
 			FileConverter fc = new FileConverter();
 			try {
+				config.setGenerujSprzedaz(generujSprzedaz.isSelected());
+				config.setGenerujZakup(generujZakupy.isSelected());
+				config.setGenerujKontrahentow(generujKontrahentow.isSelected());
+				config.setNazwaBazy(nazwaBazy.getText());
 				fc.convert(fileNameLabel.getText());
 			} catch (ConvertException e) {
 				message = e.getMessage();
 			}
-			JOptionPane.showMessageDialog(this, message);
-		} else {
-			JOptionPane.showMessageDialog(this, "Nie wybrano pliku");
 		}
+		JOptionPane.showMessageDialog(this, message);
 	}
-	
+
 	private void selectFileActionPerformed(ActionEvent evt) {
 		int returnVal = fileChooser.showOpenDialog(this);
 
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File file = fileChooser.getSelectedFile();
-            fileNameLabel.setText(file.getAbsolutePath());
-            //This is where a real application would open the file.
-            System.out.println("Opening: " + file.getAbsolutePath());
-            
-        } else {
-        	fileNameLabel.setText("");
-            System.out.println("Open command cancelled by user.");
-        }
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			File file = fileChooser.getSelectedFile();
+			fileNameLabel.setText(file.getAbsolutePath());
+			// This is where a real application would open the file.
+			System.out.println("Opening: " + file.getAbsolutePath());
+
+		} else {
+			fileNameLabel.setText("");
+			System.out.println("Open command cancelled by user.");
+		}
 	}
-	
+
 	private void centreWindow(Window frame) {
-	    Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-	    int x = (int) ((dimension.getWidth() - frame.getWidth()) / 2);
-	    int y = (int) ((dimension.getHeight() - frame.getHeight()) / 2);
-	    frame.setLocation(x, y);
-	}	
+		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+		int x = (int) ((dimension.getWidth() - frame.getWidth()) / 2);
+		int y = (int) ((dimension.getHeight() - frame.getHeight()) / 2);
+		frame.setLocation(x, y);
+	}
 
 }

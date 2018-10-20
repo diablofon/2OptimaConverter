@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import eu.ksiegowasowa.Config;
 import eu.ksiegowasowa.convert.pojo.Faktura;
 import eu.ksiegowasowa.convert.pojo.Faktura.TypFaktury;
 import eu.ksiegowasowa.convert.pojo.Pozycja;
@@ -104,10 +105,16 @@ public class EppReader {
 		String[] tokens = line.split(TOKEN);
 		switch (trimSemicolons(tokens[RODZAJ_FAKTURY_INDEX])) {
 		case FAKTURA_SPRZEDAZOWA:
+			if (!Config.getConfig().isGenerujSprzedaz()) {
+				return f;
+			}
 			f = new Faktura();
 			f.typ = TypFaktury.Sprzedaz;
 			break;
 		case FAKTURA_ZAKUPOWA:
+			if (!Config.getConfig().isGenerujZakup()) {
+				return f;
+			}
 			f = new Faktura();
 			f.typ = TypFaktury.Zakup;
 			break;
