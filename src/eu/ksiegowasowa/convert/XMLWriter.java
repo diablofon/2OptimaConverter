@@ -19,6 +19,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import eu.ksiegowasowa.Config;
 import eu.ksiegowasowa.convert.pojo.Faktura;
 import eu.ksiegowasowa.convert.pojo.Pozycja;
 
@@ -48,13 +49,13 @@ public class XMLWriter {
 
 			Element rejestrySprzedazyVat = createElementAndAppend("REJESTRY_SPRZEDAZY_VAT", rootElement, null, false);
 			createElementAndAppend("WERSJA", rejestrySprzedazyVat, "2.00", false);
-			createElementAndAppend("BAZA_ZRD_ID", rejestrySprzedazyVat, "MSTRA", false);
-			createElementAndAppend("BAZA_DOC_ID", rejestrySprzedazyVat, "MSTRA", false);
+			createElementAndAppend("BAZA_ZRD_ID", rejestrySprzedazyVat, Config.getConfig().getNazwaBazy(), false);
+			createElementAndAppend("BAZA_DOC_ID", rejestrySprzedazyVat, Config.getConfig().getNazwaBazy(), false);
 
 			Element rejestryZakupuVat = createElementAndAppend("REJESTRY_ZAKUPU_VAT", rootElement, null, false);
 			createElementAndAppend("WERSJA", rejestryZakupuVat, "2.00", false);
-			createElementAndAppend("BAZA_ZRD_ID", rejestryZakupuVat, "MSTRA", false);
-			createElementAndAppend("BAZA_DOC_ID", rejestryZakupuVat, "MSTRA", false);
+			createElementAndAppend("BAZA_ZRD_ID", rejestryZakupuVat, Config.getConfig().getNazwaBazy(), false);
+			createElementAndAppend("BAZA_DOC_ID", rejestryZakupuVat, Config.getConfig().getNazwaBazy(), false);
 
 			for (Faktura faktura : faktury) {
 				switch (faktura.typ) {
